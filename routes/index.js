@@ -58,9 +58,9 @@ server.get('/checks', function(req, res, next) {
 /**
  * GET
  */
-/*server.get('/todos/:todo_id', function(req, res, next) {
+server.get('/checks/:check_id', function(req, res, next) {
 
-    Todo.findOne({ _id: req.params.todo_id }, function(err, doc) {
+    Check.findOne({ _id: req.params.check_id }, function(err, doc) {
 
         if (err) {
             log.error(err)
@@ -72,23 +72,23 @@ server.get('/checks', function(req, res, next) {
 
     })
 
-})*/
+})
 
 
 /**
  * UPDATE
  */
-/*server.put('/todos/:todo_id', function(req, res, next) {
+server.put('/checks/:check_id', function(req, res, next) {
 
     let data = req.body || {}
 
     if (!data._id) {
 		_.extend(data, {
-			_id: req.params.todo_id
+			_id: req.params.check_id
 		})
 	}
 
-    Todo.findOne({ _id: req.params.todo_id }, function(err, doc) {
+    Check.findOne({ _id: req.params.check_id }, function(err, doc) {
 
 		if (err) {
 			log.error(err)
@@ -97,14 +97,12 @@ server.get('/checks', function(req, res, next) {
 			return next(new errors.ResourceNotFoundError('The resource you requested could not be found.'))
 		}
 
-		Todo.update({ _id: data._id }, data, function(err) {
-
+		Check.update({ _id: data._id }, data, function(err) {
 
 			if (err) {
 				log.error(err)
 				return next(new errors.InvalidContentError(err.errors.name.message))
 			}
-
 
 			res.send(200, data)
             next()
@@ -113,14 +111,14 @@ server.get('/checks', function(req, res, next) {
 
 	})
 
-})*/
+})
 
 /**
  * DELETE
  */
-/*server.del('/todos/:todo_id', function(req, res, next) {
+server.del('/checks/:check_id', function(req, res, next) {
 
-    Todo.remove({ _id: req.params.todo_id }, function(err) {
+    Check.remove({ _id: req.params.check_id }, function(err) {
 
 		if (err) {
 			log.error(err)
@@ -132,4 +130,4 @@ server.get('/checks', function(req, res, next) {
 
 	})
 
-})*/
+})
