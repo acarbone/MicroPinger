@@ -1,0 +1,17 @@
+version: '2'
+services:
+    app:
+        image: node:latest
+        container_name: app
+        command: node /src/app/index.js
+        volumes:
+            - .:/src/app
+        ports:
+            - "3000:3000"
+        links:
+            - mongo:mongo
+    mongo:
+        image: mongo:3.4
+        container_name: mongo
+        volumes:
+            - ./data:/data/db
