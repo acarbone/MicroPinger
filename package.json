@@ -14,6 +14,8 @@
     "mongoose": "^4.10.6",
     "mongoose-api-query": "^0.1.1-pre",
     "mongoose-createdmodified": "0.0.2",
+    "node-crontab": "0.0.8",
+    "request": "^2.81.0",
     "restify": "^4.3.0",
     "restify-errors": "^4.3.0",
     "winston": "^2.3.1"

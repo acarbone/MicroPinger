@@ -8,7 +8,9 @@ const config        = require('./config'),
       bunyan        = require('bunyan'),
       winston       = require('winston'),
       bunyanWinston = require('bunyan-winston-adapter'),
-      mongoose      = require('mongoose')
+      mongoose      = require('mongoose'),
+      crontab       = require('node-crontab'),
+      request       = require('request')
 
 /**
  * Logging
@@ -76,6 +78,29 @@ server.listen(config.port, function() {
         )
 
         require('./routes')
+
+        const Check = require('./models/check')
+        const Log = require('./models/log')
+
+        Check.find().cursor()
+            .on('data', function(item){
+                var jobId = crontab.scheduleJob("*/" + item.minutes_interval + " * * * *", function(){
+                    //This will call this function every X minutes
+                    request.get({
+                        url : item.url,
+                        time : true
+                    }, function (err, response) {
+                        var responseLog = new Log({
+                            url: item.url,
+                            status_code: response.statusCode,
+                            response_time_ms: response.elapsedTime
+                        })
+                        responseLog.save()
+                    });
+
+
+                });
+            })
 
     })
 
