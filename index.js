@@ -9,8 +9,7 @@ const config        = require('./config'),
       winston       = require('winston'),
       bunyanWinston = require('bunyan-winston-adapter'),
       mongoose      = require('mongoose'),
-      crontab       = require('node-crontab'),
-      request       = require('request')
+      schedule      = require('./request/schedule')
 
 /**
  * Logging
@@ -35,6 +34,8 @@ global.server = restify.createServer({
     version : config.version,
     log     : bunyanWinston.createAdapter(log),
 })
+
+global.jobs = {}
 
 /**
  * Middleware
@@ -80,26 +81,10 @@ server.listen(config.port, function() {
         require('./routes')
 
         const Check = require('./models/check')
-        const Log = require('./models/log')
 
         Check.find().cursor()
             .on('data', function(item){
-                var jobId = crontab.scheduleJob("*/" + item.minutes_interval + " * * * *", function(){
-                    //This will call this function every X minutes
-                    request.get({
-                        url : item.url,
-                        time : true
-                    }, function (err, response) {
-                        var responseLog = new Log({
-                            url: item.url,
-                            status_code: response.statusCode,
-                            response_time_ms: response.elapsedTime
-                        })
-                        responseLog.save()
-                    });
-
-
-                });
+                schedule(item.minutes_interval, item.url, item.id)
             })
 
     })

@@ -1,7 +1,9 @@
 /**
  * Models
  */
-const Check = require('../models/check')
+const Check = require('../models/check'),
+      schedule = require('../request/schedule'),
+      removeSchedule = require('../request/removeSchedule')
 
 /**
  * POST
@@ -18,6 +20,8 @@ server.post('/checks', function(req, res, next) {
             return next(new errors.InternalError(err.message))
             next()
         }
+
+        schedule(check.minutes_interval, check.url, check.id)
 
         res.send(201)
         next()
@@ -96,6 +100,8 @@ server.put('/checks/:check_id', function(req, res, next) {
 				return next(new errors.InvalidContentError(err.errors.name.message))
 			}
 
+      schedule(data.minutes_interval, data.url, data._id)
+
 			res.send(200, data)
             next()
 
@@ -116,6 +122,8 @@ server.del('/checks/:check_id', function(req, res, next) {
 			log.error(err)
 			return next(new errors.InvalidContentError(err.errors.name.message))
 		}
+
+    removeSchedule(req.params.check_id)
 
 		res.send(204)
         next()

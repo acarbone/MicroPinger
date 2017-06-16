@@ -8,7 +8,7 @@ const Log = require('../models/log')
  */
 server.get('/logs', function(req, res, next) {
 
-    Log.apiQuery(req.params, function(err, docs) {
+    Log.find({}).sort({date: 'desc'}).exec(function(err, docs) {
 
         if (err) {
             log.error(err)
