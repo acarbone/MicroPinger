@@ -1,9 +1,7 @@
-/**
- * Models
- */
 const Check = require('../models/check'),
       schedule = require('../request/schedule'),
-      removeSchedule = require('../request/removeSchedule')
+      removeSchedule = require('../request/removeSchedule'),
+      _ = require('lodash')
 
 /**
  * POST

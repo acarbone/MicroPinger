@@ -14,5 +14,5 @@ module.exports = function(url) {
             response_time_ms: response.elapsedTime
         })
         respLog.save()
-    });
+    })
 }

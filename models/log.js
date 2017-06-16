@@ -18,8 +18,7 @@ const LogSchema = new mongoose.Schema({
         type: Number,
         required: true
     }
-}, { minimize: false });
-
+}, { minimize: false })
 
 LogSchema.plugin(mongooseApiQuery)
 LogSchema.plugin(createdModified, { index: true })

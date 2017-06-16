@@ -1,6 +1,3 @@
-/**
- * Models
- */
 const Log = require('../models/log')
 
 /**

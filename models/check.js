@@ -14,8 +14,7 @@ const CheckSchema = new mongoose.Schema({
         type: Number,
         required: true
     }
-}, { minimize: false });
-
+}, { minimize: false })
 
 CheckSchema.plugin(mongooseApiQuery)
 CheckSchema.plugin(createdModified, { index: true })

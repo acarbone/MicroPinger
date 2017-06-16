@@ -3,7 +3,6 @@
 const crontab  = require('node-crontab')
 
 module.exports = function(id) {
-    console.log("Removing schedule", id)
-    crontab.cancelJob(id)
+    crontab.cancelJob(jobs[id])
     delete jobs[id]
 }
