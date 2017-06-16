@@ -3,16 +3,11 @@ const Check = require('../models/check'),
       removeSchedule = require('../request/removeSchedule'),
       _ = require('lodash')
 
-/**
- * POST
- */
 server.post('/checks', function(req, res, next) {
-
     let data = req.body || {}
-
     let check = new Check(data)
-    check.save(function(err) {
 
+    check.save(function(err) {
         if (err) {
             log.error(err)
             return next(new errors.InternalError(err.message))
@@ -20,22 +15,13 @@ server.post('/checks', function(req, res, next) {
         }
 
         schedule(check.minutes_interval, check.url, check.id)
-
         res.send(201)
         next()
-
     })
-
 })
 
-
-/**
- * LIST
- */
 server.get('/checks', function(req, res, next) {
-
     Check.apiQuery(req.params, function(err, docs) {
-
         if (err) {
             log.error(err)
             return next(new errors.InvalidContentError(err.errors.name.message))
@@ -43,19 +29,11 @@ server.get('/checks', function(req, res, next) {
 
         res.send(docs)
         next()
-
     })
-
 })
 
-
-/**
- * GET
- */
 server.get('/checks/:check_id', function(req, res, next) {
-
     Check.findOne({ _id: req.params.check_id }, function(err, doc) {
-
         if (err) {
             log.error(err)
             return next(new errors.InvalidContentError(err.errors.name.message))
@@ -63,69 +41,49 @@ server.get('/checks/:check_id', function(req, res, next) {
 
         res.send(doc)
         next()
-
     })
-
 })
 
-
-/**
- * UPDATE
- */
 server.put('/checks/:check_id', function(req, res, next) {
-
     let data = req.body || {}
 
     if (!data._id) {
-		_.extend(data, {
-			_id: req.params.check_id
-		})
-	}
+        _.extend(data, {
+            _id: req.params.check_id
+        })
+    }
 
     Check.findOne({ _id: req.params.check_id }, function(err, doc) {
+        if (err) {
+            log.error(err)
+            return next(new errors.InvalidContentError(err.errors.name.message))
+        } else if (!doc) {
+            return next(new errors.ResourceNotFoundError('The resource you requested could not be found.'))
+        }
 
-		if (err) {
-			log.error(err)
-			return next(new errors.InvalidContentError(err.errors.name.message))
-		} else if (!doc) {
-			return next(new errors.ResourceNotFoundError('The resource you requested could not be found.'))
-		}
+        Check.update({ _id: data._id }, data, function(err) {
+            if (err) {
+                log.error(err)
+                return next(new errors.InvalidContentError(err.errors.name.message))
+            }
 
-		Check.update({ _id: data._id }, data, function(err) {
-
-			if (err) {
-				log.error(err)
-				return next(new errors.InvalidContentError(err.errors.name.message))
-			}
-
-      schedule(data.minutes_interval, data.url, data._id)
-
-			res.send(200, data)
+            schedule(data.minutes_interval, data.url, data._id)
+            res.send(200, data)
             next()
-
-		})
-
-	})
-
+        })
+    })
 })
 
-/**
- * DELETE
- */
 server.del('/checks/:check_id', function(req, res, next) {
-
     Check.remove({ _id: req.params.check_id }, function(err) {
+        if (err) {
+            log.error(err)
+            return next(new errors.InvalidContentError(err.errors.name.message))
+        }
 
-		if (err) {
-			log.error(err)
-			return next(new errors.InvalidContentError(err.errors.name.message))
-		}
+        removeSchedule(req.params.check_id)
 
-    removeSchedule(req.params.check_id)
-
-		res.send(204)
+        res.send(204)
         next()
-
-	})
-
+    })
 })

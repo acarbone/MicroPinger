@@ -64,7 +64,6 @@ server.listen(config.port, function() {
     })
 
     mongoose.connection.on('open', function(err) {
-
         if (err) {
             log.error('Mongoose default connection error: ' + err)
             process.exit(1)
@@ -79,16 +78,13 @@ server.listen(config.port, function() {
         )
 
         require('./routes')
-
         const Check = require('./models/check')
 
         Check.find().cursor()
             .on('data', function(item){
                 schedule(item.minutes_interval, item.url, item.id)
             })
-
     })
 
     global.db = mongoose.connect(config.db.uri)
-
 })
