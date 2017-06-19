@@ -24,6 +24,6 @@ services:
         build: ./Notifier
         container_name: mp_notifier
         volumes:
-            - .:/src/app
+            - ./Notifier:/src/app
         links:
             - mp__redis:redis
