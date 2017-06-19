@@ -1,4 +1,4 @@
-import redis
+import redis, os
 from slackclient import SlackClient
 
 # r = redis.StrictRedis(host='localhost', port=6379, db=0)
@@ -11,12 +11,13 @@ from slackclient import SlackClient
 #         print "Subscriber: %s" % message['data']
 #     time.sleep(1)
 
-def notify(data):
-    slack_token = os.environ[""]
-    sc = SlackClient(slack_token)
+def notify():
+    sc = SlackClient(os.environ["SLACK_TOKEN"])
 
     sc.api_call(
       "chat.postMessage",
-      channel="#python",
-      text="Hello from Python! :tada:"
+      channel="#general",
+      text="Ciaooo"
     )
+
+notify()
