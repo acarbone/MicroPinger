@@ -11,7 +11,7 @@ module.exports = {
     },
     redis: {
         port: 6379,
-        host: 'pinger_redis',
+        host: 'redis',
         channel: 'micro_pinger'
     }
 }
