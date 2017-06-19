@@ -9,4 +9,9 @@ module.exports = {
     db: {
         uri: 'mongodb://mongo:27017/db',
     },
+    redis: {
+        port: 6379,
+        host: 'pinger_redis',
+        channel: 'micro_pinger'
+    }
 }

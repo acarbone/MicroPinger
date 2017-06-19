@@ -1,7 +1,8 @@
 'use strict'
 
 const request = require('request'),
-      Log = require('../models/log')
+      Log = require('../models/log'),
+      publish = require('./publish')
 
 module.exports = function(url) {
     request.get({
@@ -14,5 +15,11 @@ module.exports = function(url) {
             response_time_ms: response.elapsedTime
         })
         respLog.save()
+        if ([4, 5].indexOf(response.statusCode[0]) == 0) {
+            publish({
+              url: url,
+              message: 'WARNING: Given URL has responded with a ' + response.statusCode + ' status code.'
+            })
+        }
     })
 }
