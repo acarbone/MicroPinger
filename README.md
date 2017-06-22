@@ -4,6 +4,8 @@ Application written in a Microservice Architecture fashion which the aim is to r
 
 The application is composed of multiple services to ensure loosely coupled business logic and technology agnostic solutions.
 
+![alt text](https://github.com/acarbone/MicroPinger/raw/master/MicroPinger-Architecture.png)
+
 ## Pinger
 
 The main responsibility of the Pinger microservice is to offer a CRUD REST API for managing the health checks.
