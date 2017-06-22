@@ -15,11 +15,9 @@ module.exports = function(url) {
             response_time_ms: response.elapsedTime
         })
         respLog.save()
-        if ([4, 5].indexOf(response.statusCode[0]) == 0) {
-            publish({
-              url: url,
-              message: 'WARNING: Given URL has responded with a ' + response.statusCode + ' status code.'
-            })
+        if (response.statusCode >= 400) {
+            console.log('NOTIFY', 'WARNING: Given URL ' + url + ' has responded with a ' + response.statusCode + ' status code.')
+            publish('WARNING: Given URL ' + url + ' has responded with a ' + response.statusCode + ' status code.')
         }
     })
 }
