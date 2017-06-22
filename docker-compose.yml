@@ -11,11 +11,13 @@ services:
         links:
             - mp__pinger_mongo:mongo
             - mp__redis:redis
+
     mp__pinger_mongo:
         image: mongo:3.4
         container_name: mp__pinger_mongo
         volumes:
             - ./Pinger/data:/data/db
+
     mp__redis:
         image: redis:latest
         container_name: mp__redis
