@@ -1,15 +1,5 @@
-import redis, os, threading, time, sys
+import redis, os, threading, time
 from slackclient import SlackClient
-
-# r = redis.StrictRedis(host='localhost', port=6379, db=0)
-# p = r.pubsub()
-# p.subscribe('test')
-#
-# while True:
-#     message = p.get_message()
-#     if message:
-#         print "Subscriber: %s" % message['data']
-#     time.sleep(1)
 
 def notify(message):
     sc = SlackClient(os.environ["SLACK_TOKEN"])
@@ -19,9 +9,6 @@ def notify(message):
       channel="#general",
       text=message
     )
-
-#notify()
-
 
 class Listener(threading.Thread):
     def __init__(self, r, channels):
